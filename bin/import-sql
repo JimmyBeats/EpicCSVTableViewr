@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+DB_USER=$1
+DB_PASSWORD=$2
+DB_NAME=$3
+SQL_FILE_PATH=$4
+
+# create a local temp file for mysql credentials so it can't be seen in the shell history
+OPTFILE="$(mktemp)";
+trap 'rm -f "$OPTFILE"' EXIT
+chmod 0600 "$OPTFILE"
+cat >"$OPTFILE" <<EOF
+[client]
+user = "${DB_USER}"
+password="${DB_PASSWORD}"
+EOF
+
+mysql --defaults-extra-file="$OPTFILE" $DB_NAME < "$SQL_FILE_PATH"

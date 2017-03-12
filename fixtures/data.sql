@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `user`
 --
-DROP table `user`;
+DROP table IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(10) NOT NULL,
   `last_name` varchar(256) NOT NULL,
@@ -82,4 +82,3 @@ INSERT INTO `user` (`user_id`, `last_name`, `first_name`, `email`, `role`, `depa
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
-}

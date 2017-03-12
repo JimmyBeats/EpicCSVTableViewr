@@ -29,8 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
   config.vm.provision :shell, inline: <<-SHELL
 
-    // Create the .env file in the root web folder for database access locally
-	# setup env file
+    # Create the .env file in the root web folder for database access locally
 ENV_FILE=$(cat <<EOF
 DB_NAME=scotchbox
 DB_USER=root
@@ -39,6 +38,17 @@ DB_HOST=localhost
 EOF
 )
 	echo "${ENV_FILE}" > /var/www/public/.env
+
+    # Create the virtualhost
+VHOST=$(cat <<EOF
+	<VirtualHost *:80>
+            ServerName ectv.local
+            DocumentRoot /var/www/public/web
+    </VirtualHost>
+EOF
+)
+
+    echo "${VHOST}" > /etc/apache2/sites-available/scotchbox.local.conf
 
 	# Jump into the web folder
 	cd /var/www/public/
@@ -51,6 +61,9 @@ EOF
 
     # Import the data fixtures
     source bin/import-sql root root scotchbox fixtures/data.sql
+
+    # restart apache
+    service apache2 restart
 
     echo "Virtual machine successfully created"
 

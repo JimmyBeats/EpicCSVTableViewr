@@ -1,6 +1,6 @@
 # EpicCSVTableViewr
 
-The best data table viewer this side of the Alamo. (Yes I mis-read the intructions intially and didn't realise it was
+The best data table viewer this side of the Alamo. (Yes I mis-read the intructions initially and didn't realise it was
 a SQL data file rather than a CSV until I'd already named the project and set it all up).
 
 Have included a vagrant script which will set everything up, so just follow these steps:

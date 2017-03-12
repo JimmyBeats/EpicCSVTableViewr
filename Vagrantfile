@@ -54,7 +54,7 @@ EOF
 	cd /var/www/public/
 
     # Run composer update
-    #composer update
+    composer update
 
     # Import data from fixture file
     sudo chmod +x bin/import-sql

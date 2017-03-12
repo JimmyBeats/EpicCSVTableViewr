@@ -19,6 +19,11 @@ class UserTable extends BaseTable implements TableInterface
         return "user";
     }
 
+    public function getPrimaryKeyFieldName()
+    {
+        return "user_id";
+    }
+
     public function getFields()
     {
         return [
@@ -42,12 +47,17 @@ class UserTable extends BaseTable implements TableInterface
      * Searches for users by the supplied name - adds a wildcard so that just the start of a name can be moved in.
      * Searches on both the last name and first name fields
      *
-     * @param $search_string The name we are going to search for
+     * @param $search_string string The name we are going to search for
      * @return null|array of users
      */
     public function findByWildNameSearch($search_string, $limit=0, $offset=0)
     {
         return $this->findBy(['first_name', 'last_name'], $search_string, $limit, $offset, true);
+    }
+
+    public function countByWildNameSearch($search_string)
+    {
+        return $this->findByCount(['first_name', 'last_name'], $search_string, true);
     }
 
 }

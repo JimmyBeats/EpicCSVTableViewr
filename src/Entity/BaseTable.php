@@ -16,9 +16,14 @@ abstract class BaseTable
         $this->repository = $repository;
     }
 
-    public function findAll($limit=0, $offset=0)
+    public function findAll($limit = 0, $offset = 0)
     {
         return $this->repository->findAllFrom($this->getTableName(), $limit, $offset);
+    }
+
+    public function countAll()
+    {
+        return $this->repository->countAllFrom($this->getTableName());
     }
 
     public function findBy($where_field, $search_string, $limit=0, $offset=0, $wild_search = false)
@@ -31,6 +36,26 @@ abstract class BaseTable
             $limit,
             $offset,
             $wild_search
+        );
+    }
+
+    public function findByCount($where_field, $search_string, $wild_search = false)
+    {
+        return $this->repository->getFindByTotalCount(
+            $this->getFields(),
+            $this->getTableName(),
+            $where_field,
+            $search_string,
+            $wild_search
+        );
+    }
+
+    public function find($id)
+    {
+        return $this->repository->findByPk(
+            $this->getTableName(),
+            $this->getPrimaryKeyFieldName(),
+            $id
         );
     }
     

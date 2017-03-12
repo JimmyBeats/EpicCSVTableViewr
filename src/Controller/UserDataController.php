@@ -5,6 +5,11 @@ namespace Jimmy\EpicCSVTableViewr\Controller;
 /**
  *  Controller for accessing and returning user data
  *
+ *  Didn't have time to add docblocks above the methods, sorry about that! Hopefully all pretty straightfoward though.
+ *
+ *  Some of the stuff around the paging would have been better to be abstracted out of here for better re-use but again
+ *  time was an issue.
+ *
  */
 class UserDataController
 {
@@ -17,6 +22,34 @@ class UserDataController
         $this->app = $app;
         $this->request = $get;
     }
+
+    public function getJsonResponse()
+    {
+
+        $records = $this->getRecords();
+
+        return json_encode([
+            'records' => $records,
+            'queryRecordCount' => $this->getTotalRecordCount(),
+            'totalRecordCount' => null,
+        ]);
+
+    }
+
+    public function getUserDetail()
+    {
+        if (isset($this->request['user_id'])) {
+
+            // Get the table
+            $user_table = $this->app['repository']->getTable('User');
+
+            // Find the user from the repo
+            return $user_table->find((int)$this->request['user_id']);
+
+        }
+    }
+
+
 
     public function getSearchQuery()
     {
@@ -54,16 +87,19 @@ class UserDataController
         return $users;
     }
 
-    public function getJsonResponse()
+    public function getTotalRecordCount()
     {
+        // Get the table
+        $user_table = $this->app['repository']->getTable('User');
 
-
-        echo json_encode([
-            'records' => $this->getRecords(),
-            'queryRecordCount' => 10,
-            'totalRecordCount' => 10,
-        ]);
-        exit;
+        // Get the users from the table
+        if ($search = $this->getSearchQuery()) {
+            $count = $user_table->countByWildNameSearch($this->getSearchQuery());
+        } else {
+            $count = $user_table->countAll();
+        }
+        return (int)$count;
     }
+
 
 }

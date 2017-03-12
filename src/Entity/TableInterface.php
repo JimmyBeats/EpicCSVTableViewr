@@ -18,4 +18,9 @@ interface TableInterface
      */
     public function getFields();
 
+    /**
+     * @return mixed The field name which is the primary key for this table
+     */
+    public function getPrimaryKeyFieldName();
+
 }

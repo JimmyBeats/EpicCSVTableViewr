@@ -55,6 +55,8 @@
 
     </div>
 
+    <div id="userModal" class="modal"></div>
+
     <!-- scripts - down the bottom to prevent blocking of page loading -->
     <script
         src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -69,6 +71,8 @@
         integrity="sha256-/kLSC4kLFkslkJlaTgB7TjurN5TIcmWfMfaXyB6dVh0="
         crossorigin="anonymous"></script>
     <script>
+
+        // These scripts belong in an external javascript file...time an issue here!
         jQuery(function(){
             $.dynatableSetup({
                 table: {
@@ -81,12 +85,23 @@
                     ajaxUrl: '/data.php',
                     ajaxOnLoad: true,
                     records: []
+                }, writers: {
+                    _attributeWriter: function(record){
+                        return "<a href='/detail.php?user_id=" + record['user_id']  + "' onclick='showModal(this); return false;'>" + record[this.id] + "</a>";
+                    }
                 }
             });
+
         });
+
+        function showModal(a){
+            $.get(a.href, function(response){
+                $('#userModal').html(response);
+                $('#userModal').modal('show');
+            });
+        }
+
     </script>
 
 </body>
 </html>
-
-

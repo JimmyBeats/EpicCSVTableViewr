@@ -28,6 +28,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Define the bootstrap file: A (shell) script that runs after first setup of your box (= provisioning)
   config.vm.provision :shell, inline: <<-SHELL
+  	
+	# Lib to fix windows line endings
+    sudo apt-get install -y tofrodos
 
     # Create the .env file in the root web folder for database access locally
 ENV_FILE=$(cat <<EOF
@@ -57,6 +60,7 @@ EOF
     composer update
 
     # Import data from fixture file
+	fromdos bin/import-sql
     sudo chmod +x bin/import-sql
 
     # Import the data fixtures

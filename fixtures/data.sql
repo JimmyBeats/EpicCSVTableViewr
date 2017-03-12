@@ -1,7 +1,7 @@
 
 -- This SQL file had a bunch of weird text at the top and also a bunch of un-necessary slashes at the end of each line.
 -- Not sure if this was a deliberate hurdle as part of the test, or just happened somewhere along the way. Anyways, I
--- manually deleted the bit at the top and used a regex replace (`\\$`to '') to get rid of the slashes.
+-- manually deleted the bit at the top and used a regex replace to get rid of the slashes.
 
 -- phpMyAdmin SQL Dump
 -- version 4.4.10

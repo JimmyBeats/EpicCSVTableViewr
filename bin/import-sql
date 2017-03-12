@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
+
+# Simple shell script to import the fixture database in. I put this in a separate shell script so I can use it in
+# my Vagrantfile and also use it in any deployment/build scripts that need to run sql scripts into db
+# (Good example of how I always consider how code can be abstracted for reuse)
+
+# Shell arguments
 DB_USER=$1
 DB_PASSWORD=$2
 DB_NAME=$3
 SQL_FILE_PATH=$4
 
-# create a local temp file for mysql credentials so it can't be seen in the shell history
+# create a local temp file for mysql credentials so they can't be seen in the shell history (good example of how I consider security!)
 OPTFILE="$(mktemp)";
 trap 'rm -f "$OPTFILE"' EXIT
 chmod 0600 "$OPTFILE"
@@ -14,4 +20,5 @@ user = "${DB_USER}"
 password="${DB_PASSWORD}"
 EOF
 
+# Run the sql script into the DB
 mysql --defaults-extra-file="$OPTFILE" $DB_NAME < "$SQL_FILE_PATH"
